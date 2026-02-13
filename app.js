@@ -75,11 +75,10 @@ function computeSpeedBonus(task) {
   const dueMin   = parseHM(task.due);
   const doneMin  = parseHM(task.completedTime);
   if (startMin === null || dueMin === null || doneMin === null) return 0;
-  const window  = dueMin - startMin;
+  const w = dueMin - startMin;
   const earlyBy = dueMin - doneMin;
-  if (window <= 0 || earlyBy <= 0) return 0;
-  const pct   = earlyBy / window;
-  return Math.max(0, Math.round(task.basePoints * Math.min(pct, 0.5)));
+  if (w <= 0 || earlyBy <= 0) return 0;
+  return Math.max(0, Math.round(task.basePoints * Math.min(earlyBy / w, 0.5)));
 }
 
 function isDone(task) { return !!task.completedTime; }
@@ -171,9 +170,61 @@ function renderFavoritesBar() {
   window.__favorites.forEach(fav => {
     const btn = document.createElement('button');
     btn.className = 'fav-btn';
-    btn.textContent = `${fav.name} (${fav.start}–${fav.end})`;
-    btn.addEventListener('click', () => addTaskFromFavorite(fav));
+    btn.textContent = `${fav.name}`;
+    btn.addEventListener('click', () => openFavEditor(fav));
     bar.appendChild(btn);
+  });
+}
+
+// Opens a small inline editor so user can adjust times before adding
+function openFavEditor(fav) {
+  // Remove any existing editor
+  const existing = document.getElementById('favEditor');
+  if (existing) existing.remove();
+
+  const editor = document.createElement('div');
+  editor.id = 'favEditor';
+  editor.style.cssText = 'background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto auto;gap:8px;align-items:end;';
+  editor.innerHTML = `
+    <label style="font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-transform:uppercase;letter-spacing:.5px">
+      Task Name
+      <input type="text" id="feName" value="${escHtml(fav.name)}" style="font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%" />
+    </label>
+    <label style="font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-transform:uppercase;letter-spacing:.5px">
+      Start
+      <input type="time" id="feStart" value="${escHtml(fav.start)}" style="font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%" />
+    </label>
+    <label style="font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-transform:uppercase;letter-spacing:.5px">
+      End
+      <input type="time" id="feEnd" value="${escHtml(fav.end)}" style="font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%" />
+    </label>
+    <label style="font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-transform:uppercase;letter-spacing:.5px">
+      Priority
+      <select id="fePriority" style="font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%">
+        <option value="high" ${fav.priority==='high'?'selected':''}>🔴 High</option>
+        <option value="medium" ${fav.priority==='medium'?'selected':''}>🟡 Medium</option>
+        <option value="low" ${fav.priority==='low'?'selected':''}>🟢 Low</option>
+      </select>
+    </label>
+    <button id="feAdd" style="padding:9px 14px;border-radius:8px;background:var(--accent);border:1px solid var(--accent);color:#fff;font-weight:600;cursor:pointer;font-size:13px;align-self:end">Add</button>
+    <button id="feCancel" style="padding:9px 14px;border-radius:8px;background:var(--card);border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:13px;align-self:end">Cancel</button>
+  `;
+
+  document.getElementById('favoritesBar').after(editor);
+
+  document.getElementById('feCancel').addEventListener('click', () => editor.remove());
+  document.getElementById('feAdd').addEventListener('click', () => {
+    const name     = document.getElementById('feName').value.trim();
+    const start    = document.getElementById('feStart').value;
+    const end      = document.getElementById('feEnd').value;
+    const priority = document.getElementById('fePriority').value;
+    if (!name)  { alert('Enter a task name'); return; }
+    if (!start) { alert('Enter a start time'); return; }
+    if (!end)   { alert('Enter an end time'); return; }
+    if (window.__state.tasks.find(t => t.name === name)) { alert(`"${name}" is already in today's tasks.`); return; }
+    window.__state.tasks.push({ id: uid(), name, start, due: end, priority, basePoints: 10, completedTime: '' });
+    saveState(); render();
+    editor.remove();
   });
 }
 
@@ -239,13 +290,6 @@ function renderHistory() {
 }
 
 function uid() { return 't_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-
-function addTaskFromFavorite(fav) {
-  const state = window.__state;
-  if (state.tasks.find(t => t.name === fav.name)) { alert(`"${fav.name}" is already in today's tasks.`); return; }
-  state.tasks.push({ id: uid(), name: fav.name, start: fav.start, due: fav.end, priority: fav.priority || 'medium', completedTime: '' });
-  saveState(); render();
-}
 
 function wireAddTask() {
   document.getElementById('btnAddTask').addEventListener('click', () => {
