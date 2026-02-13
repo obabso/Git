@@ -1,34 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-</head>
-<body>
-    <h1>Task Manager</h1>
-    <button id="manualTaskBtn">Create Manual Task</button>
-    <button id="quickAddFavoritesBtn">Quick Add to Favorites</button>
-    <button id="saveTodaysGameBtn">Save Today's Game</button>
-    <div id="completedTasks">Persistent Completed Tasks Display</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Today Gameboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>🎮 Today Gameboard</h1>
+          <p class="sub" id="todayDate"></p>
+        </div>
+        <div class="header-actions">
+          <button id="btnSaveDay" class="btn-save">💾 Save Today's Game</button>
+          <button id="btnNewDay" class="btn-new">📅 New Day</button>
+          <button id="btnHistory" class="btn-secondary">📚 History</button>
+        </div>
+      </div>
+    </header>
 
-    <script>
-        // Functionality for creating manual tasks 
-        document.getElementById('manualTaskBtn').addEventListener('click', function() {
-            // Logic for manual task creation
-        });
-        
-        // Functionality for quick adding to favorites
-        document.getElementById('quickAddFavoritesBtn').addEventListener('click', function() {
-            // Logic for quick add favorites
-        });
-        
-        // Functionality for saving today's game
-        document.getElementById('saveTodaysGameBtn').addEventListener('click', function() {
-            // Logic for saving today's game
-        });
-        
-        // Logic for persistent display of completed tasks
-    </script>
-</body>
-</html>
+    <main>
+      <section class="scoreboard" id="scoreboard">
+        <div class="card card-completed">
+          <div class="label">✅ Completed</div>
+          <div class="value" id="sbCompleted">0</div>
+          <div class="sub-value" id="sbTotal2"
