@@ -22,8 +22,111 @@
     </header>
 
     <main>
-      <section class="scoreboard" id="scoreboard">
+      <section class="scoreboard">
         <div class="card card-completed">
           <div class="label">✅ Completed</div>
           <div class="value" id="sbCompleted">0</div>
-          <div class="sub-value" id="sbTotal2"
+          <div class="sub-value">of <span id="sbTotalTasks">0</span></div>
+        </div>
+        <div class="card card-base">
+          <div class="label">⭐ Base Points</div>
+          <div class="value" id="sbBase">0</div>
+          <div class="sub-value">of 100</div>
+        </div>
+        <div class="card card-bonus">
+          <div class="label">⚡ Speed Bonus</div>
+          <div class="value" id="sbBonus">0</div>
+          <div class="sub-value">extra pts</div>
+        </div>
+        <div class="card card-total">
+          <div class="label">🏆 Total Score</div>
+          <div class="value grand" id="sbTotal">0</div>
+          <div class="sub-value" id="sbPct">0 / 100+ pts</div>
+        </div>
+      </section>
+
+      <section class="favorites-section">
+        <h2>⚡ Quick Add Favorites</h2>
+        <div class="favorites-bar" id="favoritesBar"></div>
+        <button id="btnManageFavorites" class="btn-secondary btn-sm">✏️ Manage Favorites</button>
+      </section>
+
+      <section class="add-task-section">
+        <h2>➕ Add Task</h2>
+        <div class="form-row">
+          <label>Task Name<input type="text" id="newTaskName" placeholder="e.g. Morning walk" /></label>
+          <label>Start Time<input type="time" id="newTaskStart" /></label>
+          <label>End Time<input type="time" id="newTaskEnd" /></label>
+          <label>Priority
+            <select id="newTaskPriority">
+              <option value="high">🔴 High</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button id="btnAddTask" class="btn-primary">Add Task</button>
+          <span class="hint">Base points auto-calculated so all tasks = 100</span>
+        </div>
+      </section>
+
+      <section class="tableWrap">
+        <h2>📋 Today's Tasks</h2>
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">🎯</div>
+          <p>No tasks yet! Add tasks above or use Quick Add favorites.</p>
+        </div>
+        <table id="tasksTable" style="display:none">
+          <thead>
+            <tr>
+              <th>Task</th><th>Start</th><th>Due</th><th>Base Pts</th>
+              <th>Finished At</th><th>Speed Bonus</th><th>Total</th><th>Done</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="tasksBody"></tbody>
+        </table>
+      </section>
+
+      <section class="controls-section">
+        <button id="btnExport" class="btn-secondary">📤 Export JSON</button>
+        <label class="btn-secondary btn-file">📥 Import JSON<input type="file" id="fileImport" accept="application/json" /></label>
+        <button id="btnResetDay" class="btn-danger">🔄 Reset All Times</button>
+      </section>
+    </main>
+
+    <div id="favoritesModal" class="modal hidden">
+      <div class="modal-box">
+        <h2>⚡ Manage Favorites</h2>
+        <p class="modal-hint">These are tasks you add every day. Click them on the main screen to instantly add.</p>
+        <div id="favoritesList"></div>
+        <div class="modal-add-fav">
+          <input type="text" id="favName" placeholder="Task name" />
+          <input type="time" id="favStart" />
+          <input type="time" id="favEnd" />
+          <select id="favPriority">
+            <option value="high">🔴 High</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <button id="btnAddFavorite" class="btn-primary">Add</button>
+        </div>
+        <div class="modal-footer"><button id="btnCloseFavorites" class="btn-secondary">Done</button></div>
+      </div>
+    </div>
+
+    <div id="historyModal" class="modal hidden">
+      <div class="modal-box modal-wide">
+        <h2>📚 Game History</h2>
+        <div id="historyList"></div>
+        <div class="modal-footer"><button id="btnCloseHistory" class="btn-secondary">Close</button></div>
+      </div>
+    </div>
+
+    <div id="overlay" class="overlay hidden"></div>
+
+    <footer><small>Local-only · No accounts · No server · Data stays in your browser</small></footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
