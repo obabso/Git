@@ -1,68 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
 :root {
-  --bg: #0f1115;
-  --card: #171a21;
-  --text: #e7e7e7;
-  --muted: #a6adbb;
-  --line: #2a2f3a;
-  --accent: #6ea8fe;
-  --danger: #ff6b6b;
+  --bg: #0a0c10;
+  --surface: #111318;
+  --card: #15181f;
+  --card-hover: #1c202a;
+  --text: #f0f0f5;
+  --muted: #8b8fa8;
+  --line: #1f2333;
+  --accent: #5b9cf6;
+  --accent2: #a78bfa;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --red: #f87171;
+  --gold: #f59e0b;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
 }
 
 header {
-  padding: 20px 18px 8px;
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
-h1 { margin: 0 0 6px; font-size: 22px; }
-.sub { margin: 0; color: var(--muted); }
-
-main { padding: 14px 18px 40px; max-width: 1100px; margin: 0 auto; }
-
-.scoreboard {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0 14px;
-}
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 12px;
-}
-.label { color: var(--muted); font-size: 12px; }
-.value { font-size: 22px; margin-top: 6px; }
-
-.controls {
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  gap: 10px;
   align-items: center;
-  margin: 10px 0 18px;
+  justify-content: space-between;
+  gap: 16px;
   flex-wrap: wrap;
 }
-button {
+h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+button, .btn-file {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 14px;
+  border-radius: 8px;
+  cursor: pointer;
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--text);
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-button.secondary { border-color: #334155; }
-button.danger { border-color: #6b1b1b; color: #ffd1d1; }
-button:hover { outline: 2px solid #243045; }
-
-.import {
+  transition: all 0.15s;
   display: inline-flex;
-  gap: 8px;
   align-items: center;
+  gap: 6px;
+}
+button:hover, .btn-file:hover { background: var(--card-hover); border-color: #2e3447; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.btn-primary:hover { background: #4a8be8; border-color: #4a8be8; }
+.btn-save { background: linear-gradient(135deg, #10b981, #059669); border-color: #10b981; color: #fff; font-weight: 600; }
+.btn-save:hover { background: linear-gradient(135deg, #059669, #047857); }
+.btn-new { background: linear-gradient(135deg, #6366f1, #4f46e5); border-color: #6366f1; color: #fff; font-weight: 600; }
+.btn-new:hover { background: linear-gradient(135deg, #4f46e5, #4338ca); }
+.btn-secondary { color: var(--muted); }
+.btn-danger { border-color: #6b1b1b; color: var(--red); }
+.btn-danger:hover { background: #1f0c0c; }
+.btn-sm { font-size: 12px; padding: 6px 10px; }
+.btn-file input { display: none; }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scoreboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.card {
   background: var(--card);
   border: 1px solid var(--line);
-  padding: 10px 12*
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.card-completed::before { background: var(--green); }
+.card-base::before { background: var(--accent); }
+.card-bonus::before { background: var(--yellow); }
+.card-total::before { background: var(--gold); }
+.card .label { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+.card .value { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; margin: 6px 0 2px; l
