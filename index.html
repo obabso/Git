@@ -1,54 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Today Gameboard</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Today Gameboard</h1>
-      <p class="sub">Points for completion + early finish bonus. Saves automatically in this browser.</p>
-    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <button id="manualTaskBtn">Create Manual Task</button>
+    <button id="quickAddFavoritesBtn">Quick Add to Favorites</button>
+    <button id="saveTodaysGameBtn">Save Today's Game</button>
+    <div id="completedTasks">Persistent Completed Tasks Display</div>
 
-    <main>
-      <section class="scoreboard" id="scoreboard">
-        <div class="card">
-          <div class="label">Completed</div>
-          <div class="value" id="sbCompleted">0</div>
-        </div>
-        <div class="card">
-          <div class="label">Base Points</div>
-          <div class="value" id="sbBase">0</div>
-        </div>
-        <div class="card">
-          <div class="label">Early Bonus</div>
-          <div class="value" id="sbBonus">0</div>
-        </div>
-        <div class="card">
-          <div class="label">Total</div>
-          <div class="value" id="sbTotal">0</div>
-        </div>
-      </section>
-
-      <section class="controls">
-        <button id="btnResetDay" class="danger">Reset Today</button>
-        <button id="btnExport" class="secondary">Export JSON</button>
-        <label class="import">
-          Import JSON
-          <input type="file" id="fileImport" accept="application/json" />
-        </label>
-      </section>
-
-      <section class="settings">
-        <h2>Scoring</h2>
-        <div class="grid">
-          <label>
-            Bonus interval (minutes)
-            <input type="number" id="bonusInterval" min="1" step="1" />
-          </label>
-          <label>
-            Bonus points per interval
-            <input type="number" id="bonusPerInterval" min="0" step="1" />
-          </label>
+    <script>
+        // Functionality for creating manual tasks 
+        document.getElementById('manualTaskBtn').addEventListener('click', function() {
+            // Logic for manual task creation
+        });
+        
+        // Functionality for quick adding to favorites
+        document.getElementById('quickAddFavoritesBtn').addEventListener('click', function() {
+            // Logic for quick add favorites
+        });
+        
+        // Functionality for saving today's game
+        document.getElementById('saveTodaysGameBtn').addEventListener('click', function() {
+            // Logic for saving today's game
+        });
+        
+        // Logic for persistent display of completed tasks
+    </script>
+</body>
+</html>
